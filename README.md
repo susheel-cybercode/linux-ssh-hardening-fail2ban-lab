@@ -179,3 +179,7 @@ auth-log-snippet.txt	Attack & detection logs
 commands-used.txt	All commands used in lab
 screenshots/	Visual proof of attack & detection
 README.md	Full project documentation
+
+📎 License
+
+MIT License
