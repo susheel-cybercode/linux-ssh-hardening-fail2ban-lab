@@ -1,0 +1,23 @@
+2025-11-19T17:31:37.483980+05:30 susheel-virtualbox sshd[3148]: Failed password for susheel from 192.168.56.1 port 59984 ssh2
+2025-11-19T17:31:46.079768+05:30 susheel-virtualbox sshd[3148]: message repeated 2 times: [ Failed password for susheel from 192.168.56.1 port 59984 ssh2]
+2025-11-19T17:33:39.129155+05:30 susheel-virtualbox sshd[3157]: Failed password for susheel from 192.168.56.1 port 34410 ssh2
+2025-11-19T17:33:49.175189+05:30 susheel-virtualbox sshd[3157]: message repeated 2 times: [ Failed password for susheel from 192.168.56.1 port 34410 ssh2]
+2025-11-19T17:40:37.457738+05:30 susheel-virtualbox sshd[3218]: Failed password for susheel from 192.168.56.101 port 46106 ssh2
+2025-11-19T17:40:48.099252+05:30 susheel-virtualbox sshd[3218]: message repeated 2 times: [ Failed password for susheel from 192.168.56.101 port 46106 ssh2]
+2025-11-19T17:45:26.041010+05:30 susheel-virtualbox sshd[3252]: Failed password for invalid user wronguser from 192.168.56.101 port 51240 ssh2
+2025-11-19T17:45:32.088010+05:30 susheel-virtualbox sshd[3252]: Failed password for invalid user wronguser from 192.168.56.101 port 51240 ssh2
+2025-11-19T17:45:35.560782+05:30 susheel-virtualbox sshd[3252]: Failed password for invalid user wronguser from 192.168.56.101 port 51240 ssh2
+2025-11-23T14:21:54.259779+05:30 susheel-virtualbox sudo:  susheel : TTY=pts/5 ; PWD=/home/susheel ; USER=root ; COMMAND=/usr/bin/grep -i 'Failed password' /var/log/auth.log
+2025-11-19T17:13:05.360623+05:30 susheel-virtualbox sshd[2080]: Accepted password for susheel from 192.168.56.1 port 50554 ssh2
+2025-11-23T14:22:26.887742+05:30 susheel-virtualbox sudo:  susheel : TTY=pts/6 ; PWD=/home/susheel ; USER=root ; COMMAND=/usr/bin/grep -i Accepted /var/log/auth.log 
+2025-11-21 13:29:33,598 fail2ban.jail           [1078]: INFO    Initiated 'pyinotify' backend
+2025-11-21 13:29:33,599 fail2ban.filter         [1078]: INFO      maxLines: 1
+2025-11-21 13:29:33,619 fail2ban.filter         [1078]: INFO      maxRetry: 5
+2025-11-21 13:29:33,620 fail2ban.filter         [1078]: INFO      findtime: 600
+2025-11-21 13:29:33,620 fail2ban.actions        [1078]: INFO      banTime: 600
+2025-11-21 13:29:33,620 fail2ban.filter         [1078]: INFO      encoding: UTF-8
+2025-11-21 13:29:33,621 fail2ban.filter         [1078]: INFO    Added logfile: '/var/log/auth.log' (pos = 50052, hash = 7cecb33a6d3568c8bf90fb6182f7ec23bb03f570)
+2025-11-21 13:29:33,626 fail2ban.jail           [1078]: INFO    Jail 'sshd' started
+2025-11-21 13:37:28,441 fail2ban.filter         [1078]: WARNING [sshd] Detected a log entry 1m 22s before the current time in operation mode. This looks like a latency problem. Treating such entries as if they just happened.
+2025-11-21 13:37:28,441 fail2ban.filter         [1078]: WARNING [sshd] Please check a jail for a timing issue. Line with odd timestamp: 2025-11-21T13:36:06.373543+05:30 susheel-virtualbox dbus-daemon[807]: message repeated 3 times: [ [system] rejected attempt to call AddMatch by connection :1.70 (uid=1000 pid=1942 comm="/usr/bin/dumpcap -S -Z none" label="unconfined") with uid 1000]
+2025-11-19 17:55:35,295 fail2ban.actions        [3126]: NOTICE  [sshd] Unban 192.168.56.101
