@@ -2,7 +2,7 @@
 **Simulated SSH brute-force (Kali → Lubuntu); Fail2Ban successfully detected and banned attacker IP.**
 Includes: `jail.local`, `auth-log-snippet.txt`, `commands-used.txt`, screenshots, and reproduction steps.
 
-## 🖼️ Screenshots / Evidence
+## 🖼️ screenshots / Evidence
 
 ### 1) Fail2Ban status
 ![Fail2Ban Status](screenshots/fail2ban-status.png)
