@@ -1,0 +1,63 @@
+# Project: SSH Hardening & Fail2Ban Lab
+# File: commands-used.txt
+# Description: Commands used during attack simulation, detection, and verification.
+
+# 1) System update (Lubuntu - defender)
+sudo apt update && sudo apt upgrade -y
+
+# 2) Install packages (defender)
+sudo apt install -y ufw fail2ban openssh-server htop
+
+# 3) UFW - firewall setup (defender)
+sudo ufw enable
+sudo ufw allow ssh
+sudo ufw status numbered
+
+# 4) Check SSH service (defender)
+systemctl status ssh
+sudo systemctl start ssh  # if not running
+
+# 5) Fail2Ban configuration (defender)
+# Copy configuration to /etc/fail2ban/jail.local (example)
+# [sshd] enabled = true, port = ssh, filter = sshd, logpath = /var/log/auth.log, maxretry = 5, findtime = 10m, bantime = 10m
+sudo systemctl restart fail2ban
+sudo fail2ban-client status sshd
+
+# 6) Display auth.log failures (defender)
+sudo grep -i "Failed password" /var/log/auth.log | tail -n 50
+sudo grep -i "Accepted" /var/log/auth.log | tail -n 20
+
+# 7) Fail2Ban logs (defender)
+sudo tail -n 50 /var/log/fail2ban.log
+sudo fail2ban-client status sshd
+
+# 8) Attack simulation (attacker - Kali)
+# Basic SSH attempt (wrong password)
+ssh wronguser@192.168.56.101
+
+# Repeat wrong password entry 6–10 times quickly to trigger Fail2Ban
+
+# 9) Brute-force automation example (use responsibly in lab only)
+# hydra example (Kali) - basic demonstration (do not run against public hosts)
+hydra -l root -P /usr/share/wordlists/rockyou.txt ssh://192.168.56.101 -t 4
+
+# 10) Nmap reconnaissance (attacker)
+nmap -sS 192.168.56.101
+nmap -sV -p- 192.168.56.101
+
+# 11) Verify ban & unban (defender)
+sudo fail2ban-client status sshd
+sudo fail2ban-client set sshd unbanip 192.168.56.101    # example unban command
+
+# 12) Capture packets (defender or analyst)
+sudo tcpdump -i enp0s8 -w /tmp/ssh_bruteforce_capture.pcap
+# or use Wireshark GUI to capture on enp0s8
+
+# 13) Helpful troubleshooting commands
+ip a
+sudo ip link set enp0s8 up
+sudo dhclient enp0s8
+
+# 14) Export logs for GitHub
+sudo grep -i "Failed password" /var/log/auth.log | head -n 50 > auth-log-snippet.txt
+sudo grep -i "Ban" /var/log/fail2ban.log | tail -n 50 >> auth-log-snippet.txt
