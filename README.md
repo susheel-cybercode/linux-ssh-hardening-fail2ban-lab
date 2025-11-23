@@ -2,6 +2,21 @@
 **Simulated SSH brute-force (Kali → Lubuntu); Fail2Ban successfully detected and banned attacker IP.**
 Includes: `jail.local`, `auth-log-snippet.txt`, `commands-used.txt`, screenshots, and reproduction steps.
 
+## 🖼️ Screenshots / Evidence
+
+### 1) Fail2Ban status
+![Fail2Ban Status](screenshots/fail2ban-status.png)
+
+### 2) Kali SSH attack attempts (failed logins)
+![Kali SSH Attacks](screenshots/kali-ssh-attacks.png)
+
+### 3) UFW firewall rules
+![UFW Status](screenshots/ufw-status.png)
+
+### 4) Auth log excerpt
+![Auth Log](screenshots/auth-log.png)
+
+
 # linux-ssh-hardening-fail2ban-lab
 SSH Hardening &amp; Brute-Force Attack Detection Lab using Fail2Ban on Lubuntu
 🚀 Linux SSH Hardening & Brute-Force Detection Lab
