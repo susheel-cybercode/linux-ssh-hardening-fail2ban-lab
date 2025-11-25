@@ -1,185 +1,190 @@
 # 🛡️ Linux SSH Hardening & Fail2Ban Brute-Force Detection Lab
 
-## TL;DR
+## 🔹 TL;DR
 Simulated SSH brute-force attacks from Kali → Lubuntu.  
 Fail2Ban detected repeated authentication failures and automatically **banned the attacker IP**.  
-Includes configs, logs, screenshots, and reproducible lab steps.
+This repo includes configs, logs, screenshots, and full reproduction steps.  
+A strong Blue-Team / SOC / Cloud Security portfolio project.
 
 ---
 
-# 📌 Project Overview
+# ⚙️ Project Overview
+This lab demonstrates practical **Linux security hardening**, **Blue Team detection**, and **automated response** using Fail2Ban.
 
-This project demonstrates practical **Linux security hardening**, **attack simulation**, and **automated detection & response** using Fail2Ban.  
-The lab replicates a real-world SOC workflow:
-
-- Attacker performs SSH brute-force  
-- Defender (Fail2Ban) monitors `/var/log/auth.log`  
-- Fail2Ban detects abnormal patterns  
-- Attacker IP is automatically **banned**  
-- Evidence is collected and analyzed  
-
-This is valuable for **SOC Analyst**, **Blue Team**, **Threat Intelligence**, and **Security Engineer** roles.
+Workflow:
+1. Kali performs SSH brute-force attempts  
+2. Lubuntu monitors `/var/log/auth.log`  
+3. Fail2Ban detects the pattern  
+4. Offending IP is **automatically banned**  
+5. Logs and evidence are collected for analysis
 
 ---
 
 # 🧪 Lab Architecture
-
-        +--------------------------+
-        |      Kali Linux          |
-        |   Attacker: 192.168.56.x |
-        +------------+-------------+
-                     |
-             Host-Only (vboxnet0)
-                     |
-        +------------+-------------+
-        |     Lubuntu Server       |
-        |  Target: 192.168.56.x    |
-        |  Fail2Ban + SSH Hardening|
-        +---------------------------+
-
-**Lubuntu (Target):**
-- UFW Firewall  
-- SSH Server  
-- Fail2Ban (sshd jail)  
-
-**Kali (Attacker):**
-- SSH brute-force attempts  
-- Recon using Nmap  
+```
+            +--------------------------+
+            |      Kali Linux          |
+            |   Attacker: 192.168.56.x |
+            +------------+-------------+
+                         |
+                 Host-Only (vboxnet0)
+                         |
+            +------------+-------------+
+            |     Lubuntu Server       |
+            |  Target: 192.168.56.x    |
+            |  Fail2Ban + SSH Hardening|
+            +---------------------------+
+```
 
 ---
 
-# ⚙️ Tools & Technologies
-
-| Component | Purpose |
-|----------|---------|
-| **Fail2Ban** | Brute-force detection & automatic banning |
-| **UFW** | Basic firewall rules |
-| **SSH** | Attack surface |
-| **Nmap** | Recon & scanning |
-| **Lubuntu** | Linux server target |
-| **Kali Linux** | Attacker machine |
-
----
-
-# 🔧 Fail2Ban Configuration (`jail.local`)
-
-Stored in this repo:  
-`jail.local`
-
-Key values:
-
-- `maxretry = 5`  
-- `findtime = 10m`  
-- `bantime = 10m`  
-- `backend = systemd`  
-- Log monitored: `/var/log/auth.log`
+# 🔧 Tools & Technologies Used
+| Tool | Purpose |
+|------|---------|
+| **Fail2Ban** | Detect & block brute-force attacks |
+| **OpenSSH Server** | Attack surface |
+| **UFW Firewall** | Basic Linux firewall |
+| **Nmap** | Recon & port scanning |
+| **Lubuntu** | Target server |
+| **Kali Linux** | Attacker |
 
 ---
 
-# 🚀 Attack Simulation Steps
+# 🗂️ Repository Contents
+| File / Folder | Description |
+|---------------|-------------|
+| `jail.local` | Fail2Ban SSH jail configuration |
+| `auth-log-snippet.txt` | Evidence of failed logins, bans, unbans |
+| `commands-used.txt` | Commands used in simulation & configuration |
+| `/screenshots` | Visual evidence |
+| `README.md` | Full documentation |
 
-Full commands included in:  
-`commands-used.txt`
+---
 
-### **1️⃣ Kali attacks Lubuntu through SSH**
+# 🔒 Fail2Ban Configuration
+Location: `/etc/fail2ban/jail.local`  
+Included in this repo.
 
-```bash
+```
+maxretry = 5
+findtime = 10m
+bantime = 10m
+logpath = /var/log/auth.log
+backend = systemd
+```
+
+---
+
+# 🚀 Attack Simulation
+### SSH brute-force from Kali
+```
 ssh wronguser@192.168.56.101
-# Repeat wrong password attempts 6–10 times
+# Repeat wrong password
+```
+### Recon with Nmap
+```
+nmap -sS 192.168.56.101
+```
+Full command list in `commands-used.txt`.
 
-2️⃣ Fail2Ban detects repeated failures
+---
 
-Monitors:
-/var/log/auth.log
+# 📄 Log Evidence
+Real log lines stored in `auth-log-snippet.txt`.
 
-3️⃣ IP is banned automatically
-
-Check ban status:
-sudo fail2ban-client status sshd
-
-📄 Log Evidence
-
-All log samples stored in:
-auth-log-snippet.txt
-
-Includes:
-
-Failed SSH login attempts
-
-Multiple retry patterns
-
-Fail2Ban warnings
-
-Ban & unban events
-
-Example log:
+Examples:
+```
 Failed password for invalid user wronguser from 192.168.56.101
 Ban 192.168.56.101
 Unban 192.168.56.101
+```
 
-🖼️ Screenshots / Evidence
-🔹 Fail2Ban banning attacker IP
+---
 
-🔹 Kali brute-force SSH attempts
+# 🖼️ Screenshots / Evidence
+Refer to the `/screenshots` folder.
 
-🔹 UFW firewall configuration
+```
+fail2ban-status.png
+kali-ssh-attacks.png
+ufw-status.png
+auth-log.png
+```
 
-🔹 Authentication log evidence
+---
 
-📚 MITRE ATT&CK Mapping
-Behavior	Technique
-SSH brute-force attempts	T1110 – Brute Force
-Repeated failed authentication	T1078 – Valid Accounts (Misuse)
-Nmap reconnaissance	T1046 – Network Service Scanning
-Automated blocking	Detection Engineering (Custom)
+# 🧠 MITRE ATT&CK Mapping
+| Behavior | Technique |
+|----------|-----------|
+| SSH brute-force | T1110 – Brute Force |
+| Repeated authentication failures | T1078 – Valid Accounts |
+| Nmap SYN scan | T1046 – Network Service Scanning |
+| Log-based detection | T1057 – Process Monitoring |
 
-🔁 How to Reproduce This Lab
-1. Setup VirtualBox Network
+---
 
-Enable Host-Only Adapter (vboxnet0)
+# 🔁 How to Reproduce This Lab
+## 1️⃣ VirtualBox Networking
+Enable:
+- **NAT** (internet)
+- **Host-Only Adapter (vboxnet0)**
 
-Assign:
+IP examples:
+- Lubuntu: `192.168.56.101`
+- Kali: `192.168.56.102`
 
-VM	IP
-Lubuntu	192.168.56.101
-Kali	192.168.56.102
+---
 
+## 2️⃣ Prepare Lubuntu (Target)
+```
 sudo apt update
 sudo apt install -y ufw fail2ban openssh-server
 sudo ufw enable
 sudo ufw allow ssh
+```
+Copy jail config:
+```
+sudo cp jail.local /etc/fail2ban/jail.local
 sudo systemctl restart fail2ban
-Copy the repo's jail.local → /etc/fail2ban/jail.local
+```
 
-3. Attack from Kali
+---
+
+## 3️⃣ Attack from Kali
+```
 ssh wronguser@192.168.56.101
 nmap -sS 192.168.56.101
+```
 
-4. Verify ban on Lubuntu
+---
+
+## 4️⃣ Verify Detection
+```
 sudo fail2ban-client status sshd
 sudo tail -n 20 /var/log/auth.log
+sudo ufw status numbered
+```
 
-🧠 What This Project Demonstrates
+---
 
-✔ Linux hardening
-✔ SSH security
-✔ Brute-force detection
-✔ Log analysis
-✔ Fail2Ban configuration
-✔ Defensive automation
-✔ Blue-team thinking
-✔ Evidence collection
+# 📊 Skills Demonstrated
+✔ Linux Hardening  
+✔ SSH Security  
+✔ Log Analysis  
+✔ Detection Engineering  
+✔ Brute-Force Detection  
+✔ Evidence Gathering  
+✔ Blue Team Workflow  
+✔ SOC Investigation
 
-This is a job-ready project for SOC / Blue Team portfolios.
+---
 
-📝 Files in This Repository
-File	Description
-jail.local	Fail2Ban configuration
-auth-log-snippet.txt	Attack & detection logs
-commands-used.txt	All commands used in lab
-screenshots/	Visual proof of attack & detection
-README.md	Full project documentation
-
-📎 License
-
+# 📎 License
 MIT License
+
+---
+
+# 👤 Author
+**Susheel M S**  
+Cybersecurity Analyst (SOC / Blue Team / Threat Intelligence)
+GitHub: https://github.com/susheel-cybercode
